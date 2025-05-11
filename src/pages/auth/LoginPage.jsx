@@ -11,8 +11,6 @@ import { openSnackbar } from "@redux/slices/snackbarSlice";
 import { useLoginMutation } from "@services/rootApi";
 
 const LoginPage = () => {
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const [login, { data = {}, isLoading, error, isSuccess, isError }] =
     useLoginMutation();
 
@@ -33,14 +31,21 @@ const LoginPage = () => {
     control,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm({
     resolver: yupResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   function onSubmit(formData) {
     console.log({ formData });
     login(formData);
   }
+
+  console.log({ email: getValues("email") });
 
   useEffect(() => {
     if (isError) {
@@ -49,9 +54,13 @@ const LoginPage = () => {
 
     if (isSuccess) {
       dispatch(openSnackbar({ message: data.message }));
-      navigate("/verify-otp");
+      navigate("/verify-otp", {
+        state: {
+          email: getValues("email"),
+        },
+      });
     }
-  }, [isError, error, dispatch, data.message, isSuccess, navigate]);
+  }, [isError, error, dispatch, data.message, isSuccess, navigate, getValues]);
 
   return (
     <div>
@@ -68,7 +77,7 @@ const LoginPage = () => {
           name="password"
           label="Password"
           control={control}
-          // type="password"
+          type="password"
           Component={TextInput}
           error={errors["password"]}
         />

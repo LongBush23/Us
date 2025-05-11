@@ -20,7 +20,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^5.0.1",
-    "@mui/material": "^7.0.2",
+    "@mui/icons-material": "^7.1.0",
+    "@mui/material": "^7.1.0",
     "@reduxjs/toolkit": "^2.7.0",
     "lodash": "^4.17.21",
     "mui-one-time-password-input": "^5.0.0",
@@ -29,6 +30,7 @@
     "react-hook-form": "^7.53.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.26.2",
+    "redux-persist": "^6.0.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {

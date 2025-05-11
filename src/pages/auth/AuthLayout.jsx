@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 const AuthLayout = () => {
   return (
-    <div className="bg-st-200 flex h-screen items-center justify-center">
+    <div className="flex h-screen items-center justify-center bg-st-200">
       <div className="h-fit w-[450px] bg-white px-8 py-10">
         <img className="mx-auto mb-6" src="/logo.png" alt="" />
         <Suspense fallback={<p>loading</p>}>

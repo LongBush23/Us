@@ -11,6 +11,9 @@ export default {
           100: "#4b465c",
           200: "#f8f7fa",
         },
+        primary: {
+          main: "#246AA3",
+        },
       },
     },
   },
