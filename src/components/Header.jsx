@@ -13,8 +13,8 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { Notifications, Menu as MenuIcon } from "@mui/icons-material";
 import { useState } from "react";
-import { useUserInfo } from "@hooks/useUserInfo";
-import { useLogout } from "@hooks/useLogout";
+import { useUserInfo } from "@hooks";
+import { useLogout } from "@hooks";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleDrawer } from "@redux/slices/settingsSlice";
