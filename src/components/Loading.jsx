@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
 const Loading = () => {
@@ -7,7 +8,7 @@ const Loading = () => {
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
       >
-        <div className="border-primary-main h-10 w-10 rounded-full border-4 border-t-transparent"></div>
+        <div className="h-10 w-10 rounded-full border-4 border-primary-main border-t-transparent"></div>
       </motion.div>
     </div>
   );

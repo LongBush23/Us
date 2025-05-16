@@ -1,3 +1,4 @@
+import { useDetectLayout } from "@hooks/index";
 import {
   HomeOutlined,
   Hub,
@@ -6,14 +7,7 @@ import {
   People,
   Translate,
 } from "@mui/icons-material";
-import {
-  Drawer,
-  List,
-  ListSubheader,
-  styled,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Drawer, List, ListSubheader, styled } from "@mui/material";
 import { toggleDrawer } from "@redux/slices/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -56,12 +50,11 @@ const SidebarContent = () => {
   );
 };
 const Sidebar = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isMediumLayout } = useDetectLayout();
   const isShowDrawer = useSelector((store) => store.settings.isShowDrawer);
   const dispatch = useDispatch();
-  console.log({ isMobile });
-  return isMobile ? (
+  console.log({ isMediumLayout });
+  return isMediumLayout ? (
     <Drawer
       open={isShowDrawer}
       onClose={() => dispatch(toggleDrawer())}

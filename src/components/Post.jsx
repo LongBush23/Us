@@ -3,7 +3,7 @@ import { Avatar, Button } from "@mui/material";
 import dayjs from "dayjs";
 
 const Post = ({
-  fullName = "",
+  fullName = "Long",
   createdAt,
   content = "",
   image,

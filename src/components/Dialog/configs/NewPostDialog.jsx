@@ -2,38 +2,42 @@ import { ImageUploader } from "@components/PostCreation";
 import {
   Avatar,
   Button,
-  // CircularProgress,
+  CircularProgress,
   DialogActions,
   DialogContent,
   TextareaAutosize,
 } from "@mui/material";
+import { closeDialog } from "@redux/slices/dialogSlice";
+import { openSnackbar } from "@redux/slices/snackbarSlice";
+import { useCreatePostMutation } from "@services/rootApi";
 // import { closeDialog } from "@redux/slices/dialogSlice";
 // import { openSnackbar } from "@redux/slices/snackbarSlice";
 // import { useCreatePostMutation } from "@services/rootApi";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 // import { useDispatch } from "react-redux";
 
 const NewPostDialog = ({ userInfo }) => {
   const [image, setImage] = useState(null);
-  // const [createNewPost, { isLoading }] = useCreatePostMutation();
+  const [createNewPost, { isLoading }] = useCreatePostMutation();
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [content, setContent] = useState("");
 
-  // const handleCreateNewPost = async () => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("content", content);
-  //     formData.append("image", image);
+  const handleCreateNewPost = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("content", content);
+      formData.append("image", image);
 
-  //     await createNewPost(formData).unwrap();
-  //     dispatch(closeDialog());
-  //     dispatch(openSnackbar({ message: "Create Post Successfully!" }));
-  //   } catch (error) {
-  //     dispatch(openSnackbar({ type: "error", message: error?.data?.message }));
-  //   }
-  // };
+      await createNewPost(formData).unwrap();
+      dispatch(closeDialog());
+      dispatch(openSnackbar({ message: "Create Post Successfully!" }));
+    } catch (error) {
+      dispatch(openSnackbar({ type: "error", message: error?.data?.message }));
+    }
+  };
 
   const isValid = !!(content || image);
 
@@ -63,9 +67,11 @@ const NewPostDialog = ({ userInfo }) => {
           fullWidth
           disabled={!isValid}
           variant="contained"
-          // onClick={handleCreateNewPost}
+          onClick={handleCreateNewPost}
         >
-          {/* {isLoading && <CircularProgress size="16px" className="mr-1" />} */}
+          {isLoading && (
+            <CircularProgress size="16px" className="mr-1" color="white" />
+          )}
           Post
         </Button>
       </DialogActions>

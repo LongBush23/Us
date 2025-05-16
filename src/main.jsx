@@ -18,6 +18,7 @@ import ProtectedLayout from "@pages/ProtectedLayout";
 import MessagePage from "@pages/MessagePage";
 import { PersistGate } from "redux-persist/integration/react";
 import Dialog from "@components/Dialog";
+import Loading from "@components/Loading";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <PersistGate loading={<p>Loading...</p>} persistor={persistor}>
+    <PersistGate loading={<Loading />} persistor={persistor}>
       <ThemeProvider theme={theme}>
         {/* <ModalProvider> */}
         <RouterProvider router={router} />

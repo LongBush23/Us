@@ -7,8 +7,6 @@ import {
   MenuItem,
   TextField,
   Toolbar,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Notifications, Menu as MenuIcon } from "@mui/icons-material";
@@ -18,13 +16,13 @@ import { useLogout } from "@hooks";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleDrawer } from "@redux/slices/settingsSlice";
+import { useDetectLayout } from "@hooks/index";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const userInfo = useUserInfo();
   const { logOut } = useLogout();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isMediumLayout } = useDetectLayout();
   const dispatch = useDispatch();
 
   const handleMenuClose = () => {
@@ -53,7 +51,7 @@ const Header = () => {
     <div>
       <AppBar color="white" position="static" className="py-4">
         <Toolbar className="!min-h-fit justify-between">
-          {isMobile ? (
+          {isMediumLayout ? (
             <IconButton
               onClick={() => {
                 dispatch(toggleDrawer());
@@ -86,7 +84,7 @@ const Header = () => {
             </div>
           )}
           <div>
-            {isMobile && (
+            {isMediumLayout && (
               <IconButton>
                 <SearchIcon />
               </IconButton>

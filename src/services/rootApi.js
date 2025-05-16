@@ -1,9 +1,10 @@
-import { logOut } from "@redux/slices/authSlice";
+import { login, logOut } from "@redux/slices/authSlice";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
   prepareHeaders: (headers, { getState }) => {
+    console.log({ store: getState() });
     const token = getState().auth.accessToken;
 
     if (token) {
@@ -13,18 +14,51 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithForceLogout = async (args, api, extraOptions) => {
+const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result?.error?.status === 401) {
-    api.dispatch(logOut());
-    window.location.href = "/login";
+  console.log("baseQueryWithForceLogout", { result });
+
+  if (
+    result?.error?.status === 401 &&
+    result?.error?.data?.message === "Token has expired."
+  ) {
+    const refreshToken = api.getState().auth.refreshToken;
+
+    if (refreshToken) {
+      const refreshResult = await baseQuery(
+        {
+          url: "/refresh-token",
+          body: { refreshToken },
+          method: "POST",
+        },
+        api,
+        extraOptions,
+      );
+
+      const newAccessToken = refreshResult?.data?.accessToken;
+
+      if (newAccessToken) {
+        api.dispatch(
+          login({
+            accessToken: newAccessToken,
+            refreshToken,
+          }),
+        );
+
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        api.dispatch(logOut());
+        window.location.href = "/login";
+      }
+    }
   }
+
   return result;
 };
 
 export const rootApi = createApi({
   reducerPath: "api",
-  baseQuery: baseQueryWithForceLogout,
+  baseQuery: baseQueryWithReauth,
   endpoints: (builder) => {
     return {
       register: builder.mutation({
@@ -54,10 +88,37 @@ export const rootApi = createApi({
           };
         },
       }),
-      getAuthUser: builder.query({
-        query: () => {
-          return `/auth-user`;
+      refreshToken: builder.mutation({
+        query: (refreshToken) => {
+          return {
+            url: "/refresh-token",
+            body: { refreshToken },
+            method: "POST",
+          };
         },
+      }),
+      getAuthUser: builder.query({
+        query: () => "/auth-user",
+      }),
+      createPost: builder.mutation({
+        query: (formData) => {
+          return {
+            url: "/posts",
+            method: "POST",
+            body: formData,
+          };
+        },
+        invalidatesTags: ["POSTS"],
+      }),
+      getPosts: builder.query({
+        query: ({ limit, offset } = {}) => {
+          return {
+            url: "/posts",
+            // method: 'GET',
+            params: { limit, offset },
+          };
+        },
+        providesTags: [{ type: "POSTS" }],
       }),
     };
   },
@@ -68,4 +129,7 @@ export const {
   useLoginMutation,
   useVerifyOTPMutation,
   useGetAuthUserQuery,
+  useCreatePostMutation,
+  useRefreshTokenMutation,
+  useGetPostsQuery,
 } = rootApi;

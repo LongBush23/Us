@@ -24,7 +24,7 @@
     "@mui/material": "^7.1.0",
     "@reduxjs/toolkit": "^2.7.0",
     "dayjs": "^1.11.13",
-    "framer-motion": "^12.11.3",
+    "framer-motion": "^12.12.0",
     "lodash": "^4.17.21",
     "motion": "^12.11.3",
     "mui-one-time-password-input": "^5.0.0",

@@ -1,12 +1,12 @@
 import { useUserInfo } from "@hooks";
 import { Avatar, Chip, Stack, TextField } from "@mui/material";
 import { openDialog } from "@redux/slices/dialogSlice";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch } from "react-redux";
 
-export const ImageUploader = () => {
-  const [image, setImage] = useState(null);
+export const ImageUploader = ({ image, setImage }) => {
+  // const [image, setImage] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles);
@@ -54,7 +54,7 @@ const PostCreation = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex gap-2 rounded bg-white p-4 shadow-sm">
+    <div className="card flex gap-2 rounded">
       <Avatar className="!bg-primary-main">
         {userInfo?.fullName?.[0]?.toUpperCase()}
       </Avatar>
